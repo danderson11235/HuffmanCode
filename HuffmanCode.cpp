@@ -1,5 +1,4 @@
 #include "HuffmanCode.hpp"
-#include <map>
 #include <stdio.h>
 #include <vector>
 #include <stack>
@@ -21,20 +20,30 @@ bool HuffmanCode::encode(std::string fileName) {
     {
         freqMap[c]++;
     }
-    std::vector<char> freqList;
+
+    return false;
+}
+
+void buildTree(std::map<char, int> freqMap) {
+    std::vector<struct Node*> freqList;
     for (auto& item : freqMap) 
     {
-        freqList.push_back(item.first);
+        Node* addnode = new Node(item.first, item.second, true, nullptr, nullptr);
+        freqList.push_back(addnode);
     }
     while (!freqList.empty()) {
         int max = 0;
         char maxItem;
         for (int i = 0; i < freqList.size(); i++) {
-            
+            for (int j = 1; j < freqList.size() - i; j++) {
+                if (freqList[j]->val < freqList[j-1]->val) {
+                    Node* temp = freqList[j];
+                    freqList[j] = freqList[j-1];
+                    freqList[j-1] = temp;
+                }
+            }
         }
     }
-
-    return false;
 }
 
 int main(int argc, char const *argv[])
