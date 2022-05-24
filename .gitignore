@@ -1,3 +1,4 @@
 p.*
 /out/
 .vscode
+test*
