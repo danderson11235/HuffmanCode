@@ -1,5 +1,7 @@
 #include "HuffmanCode.hpp"
 #include <stdio.h>
+#include <vector>
+#include <stack>
 
 HuffmanCode::HuffmanCode(std::string fileName)
 {
@@ -76,6 +78,8 @@ std::vector<char> HuffmanCode::getCharList(std::string fileName) {
 
 int main(int argc, char const *argv[])
 {
-    
+    std::string fileName = argv[1];
+    HuffmanCode hc(fileName);
+    hc.encode(fileName);
     return 0;
 }
