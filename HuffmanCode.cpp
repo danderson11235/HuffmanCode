@@ -1,19 +1,12 @@
 #include "HuffmanCode.hpp"
 #include <stdio.h>
-#include <vector>
+#include <list>
 #include <stack>
+#include <iostream>
+
 
 HuffmanCode::HuffmanCode(std::string fileName)
 {
-    root = nullptr;
-    // charList = getCharList(fileName);
-}
-
-HuffmanCode::~HuffmanCode()
-{
-}
-
-bool HuffmanCode::encode(std::string fileName) {
     FILE* fi = fopen(fileName.c_str(), "r+");
     char c;
     std::map<char, int> freqMap;
@@ -37,6 +30,7 @@ bool HuffmanCode::encode(std::string fileName) {
         }
         Node* temp = nodeList[0];
         int min = temp->count;
+        vec_save = nodeList.begin();
         for (vec_it = nodeList.begin(); vec_it != nodeList.end(); vec_it++) {
             if ((*vec_it)->count < min) {
                 temp = *vec_it;
@@ -48,10 +42,11 @@ bool HuffmanCode::encode(std::string fileName) {
         // Do it again
         Node* temp2 = nodeList[0];
         min = temp2->count;
+        vec_save = nodeList.begin();
         for (vec_it = nodeList.begin(); vec_it != nodeList.end(); vec_it++) {
             if ((*vec_it)->count < min) {
-                temp = *vec_it;
-                min = temp->count;
+                temp2 = *vec_it;
+                min = temp2->count;
                 vec_save = vec_it;
             }
         }
@@ -64,7 +59,25 @@ bool HuffmanCode::encode(std::string fileName) {
         nodeList.push_back(comb);
     }
     
+}
 
+HuffmanCode::~HuffmanCode()
+{
+}
+
+bool HuffmanCode::encode(std::string fileName) {
+    return false;
+}
+
+void HuffmanCode::printTree(Node* root) {
+    if (root == nullptr) return;
+    std::cout << "(" << root->item << ", " << root->count << ")" << std::endl;
+    printTree(root->zero);
+    printTree(root->one);
+}
+
+void HuffmanCode::printTree() {
+    printTree(root);
 }
 
 std::vector<char> HuffmanCode::getCharList(std::string fileName) {
@@ -74,12 +87,14 @@ std::vector<char> HuffmanCode::getCharList(std::string fileName) {
     while ((c = getc(fi)) != EOF) {
         freqMap[c]++;
     }
+    return std::vector<char>();
 }
 
 int main(int argc, char const *argv[])
 {
     std::string fileName = argv[1];
     HuffmanCode hc(fileName);
-    hc.encode(fileName);
+    hc.printTree();
+    // hc.encode(fileName);
     return 0;
 }

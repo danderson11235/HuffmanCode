@@ -1,2 +1,2 @@
 all:
-	g++ -o HuffmanCode HuffmanCode.cpp
+	g++ -o HuffmanCode -g HuffmanCode.cpp
