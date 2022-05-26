@@ -59,14 +59,57 @@ HuffmanCode::HuffmanCode(std::string fileName)
         nodeList.push_back(comb);
     }
     
+    buildRepList(root, "");
+    
+    fclose(fi);
 }
+
+
 
 HuffmanCode::~HuffmanCode()
 {
 }
 
-bool HuffmanCode::encode(std::string fileName) {
-    return false;
+void HuffmanCode::buildRepList(Node* node, std::string rep) {
+    if (node == nullptr) {
+        // rep.pop_back();
+        return;
+    }
+    if (node->item != 0) {
+        repList[node->item] = rep;
+    }
+    buildRepList(node->zero, rep + "0");
+    buildRepList(node->one, rep + "1");
+}
+
+std::string HuffmanCode::encode(std::string fileName) {
+    FILE* fi = fopen(fileName.c_str(), "r+");
+    std::string output = "";
+    char c;
+    while ((c = getc(fi)) != EOF)
+    {
+        output += repList[c];
+    }
+    
+    return output;
+}
+
+std::string HuffmanCode::decode(std::string fileName) {
+    FILE* fi = fopen(fileName.c_str(), "r+");
+    char c;
+    std::string output;
+    Node* temp = root;
+    while ((c = getc(fi)) != EOF) {
+        if (c == '0') temp = temp->zero;
+        else if (c == '1') temp = temp->one;
+        else return "";
+        if (temp == nullptr) return "";
+        if (temp->item != 0) {
+            output += temp->item;
+            temp = root;
+        }
+    }
+    return output;
 }
 
 void HuffmanCode::printTree(Node* root) {

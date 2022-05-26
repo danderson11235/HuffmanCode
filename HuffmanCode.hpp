@@ -21,11 +21,12 @@ private:
     std::vector<Node*> nodeList;
     Node* root;
     void printTree(Node* root);
-
+    std::map<char, std::string> repList;
+    void buildRepList(Node* node, std::string rep);
 public:
     HuffmanCode(std::string fileName);
     ~HuffmanCode();
-    bool encode(std::string fileName);
-    bool decode(std::string fileName);
+    std::string encode(std::string fileName);
+    std::string decode(std::string fileName);
     void printTree();
 };
